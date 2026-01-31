@@ -4,7 +4,7 @@ import { ref, update } from 'firebase/database';
 import { database } from '@/lib/firebase';
 
 export default function VenueList({ session, sessionId }) {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(session?.selectedCategory || 'all');
   const [loading, setLoading] = useState(false);
 
   const venues = session?.venues || [];
@@ -25,12 +25,26 @@ export default function VenueList({ session, sessionId }) {
     await update(ref(database), updates);
   };
 
+  const updateCategory = async (category) => {
+    setSelectedCategory(category);
+    const updates = {};
+    updates[`sessions/${sessionId}/selectedCategory`] = category;
+    await update(ref(database), updates);
+  };
+
   // Trigger initial calculation when both users are present
   useEffect(() => {
     if (users.length === 2 && venues.length === 0 && !loading) {
       calculateVenues();
     }
   }, [users.length]);
+
+  // Listen for category changes from other user
+  useEffect(() => {
+    if (session?.selectedCategory) {
+      setSelectedCategory(session.selectedCategory);
+    }
+  }, [session?.selectedCategory]);
 
   const calculateVenues = async () => {
     if (users.length !== 2) return;
@@ -100,7 +114,7 @@ export default function VenueList({ session, sessionId }) {
         {categories.map(cat => (
           <button
             key={cat}
-            onClick={() => setSelectedCategory(cat)}
+            onClick={() => updateCategory(cat)}
             className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
               selectedCategory === cat
                 ? 'bg-blue-500 text-white'
