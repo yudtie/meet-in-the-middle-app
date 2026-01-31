@@ -128,8 +128,20 @@ export default function VenueList({ session, sessionId }) {
 
       {/* Venue List */}
       <div className="flex-1 overflow-y-auto space-y-3">
-        {filteredVenues.map((venue, index) => {
-          const isSelected = session?.selectedVenue?.id === venue.id;
+        {(() => {
+        // Separate selected venue from others
+        const selectedVenue = session?.selectedVenue;
+        const selectedIndex = filteredVenues.findIndex(v => v.id === selectedVenue?.id);
+        
+        // Reorder: selected venue first, then the rest
+        let orderedVenues = [...filteredVenues];
+        if (selectedIndex > -1) {
+          const [selected] = orderedVenues.splice(selectedIndex, 1);
+          orderedVenues.unshift(selected);
+        }
+  
+          return orderedVenues.map((venue, index) => {
+            const isSelected = session?.selectedVenue?.id === venue.id;
           
           return (
             <div
@@ -143,40 +155,40 @@ export default function VenueList({ session, sessionId }) {
             >
               {/* Venue Header */}
               <div className="mb-2">
-  <div className="flex items-center gap-2 mb-2">
-    <span className="bg-red-500 text-white w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
-      {index + 1}
-    </span>
-    <h3 className="font-bold text-base sm:text-lg flex-1 min-w-0 truncate">{venue.name}</h3>
-    <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs flex-shrink-0">
-      {venue.category.replace('_', ' ')}
-    </span>
-  </div>
-  <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{venue.address}</p>
-</div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="bg-red-500 text-white w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
+                    {index + 1}
+                  </span>
+                  <h3 className="font-bold text-base sm:text-lg flex-1 min-w-0 truncate">{venue.name}</h3>
+                  <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs flex-shrink-0">
+                    {venue.category.replace('_', ' ')}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{venue.address}</p>
+              </div>
 
               {/* Drive Times */}
               <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-3">
-  <div className="bg-blue-100 rounded p-2 sm:p-3">
-    <div className="text-xs text-gray-600 truncate">{users[0]?.name || 'User 1'}</div>
-    <div className="font-bold text-blue-700 text-sm sm:text-base">
-      {venue.driveTimeUser1} min
-    </div>
-    <div className="text-xs text-blue-600 mt-1">
-      {venue.distanceUser1 ? `${venue.distanceUser1} mi` : ''}
-    </div>
-  </div>
-  
-  <div className="bg-green-100 rounded p-2 sm:p-3">
-    <div className="text-xs text-gray-600 truncate">{users[1]?.name || 'User 2'}</div>
-    <div className="font-bold text-green-700 text-sm sm:text-base">
-      {venue.driveTimeUser2} min
-    </div>
-    <div className="text-xs text-green-600 mt-1">
-      {venue.distanceUser2 ? `${venue.distanceUser2} mi` : ''}
-    </div>
-  </div>
-</div>
+                <div className="bg-blue-100 rounded p-2 sm:p-3">
+                  <div className="text-xs text-gray-600 truncate">{users[0]?.name || 'User 1'}</div>
+                  <div className="font-bold text-blue-700 text-sm sm:text-base">
+                    {venue.driveTimeUser1} min
+                  </div>
+                  <div className="text-xs text-blue-600 mt-1">
+                    {venue.distanceUser1 ? `${venue.distanceUser1} mi` : ''}
+                  </div>
+                </div>
+                
+                <div className="bg-green-100 rounded p-2 sm:p-3">
+                  <div className="text-xs text-gray-600 truncate">{users[1]?.name || 'User 2'}</div>
+                  <div className="font-bold text-green-700 text-sm sm:text-base">
+                    {venue.driveTimeUser2} min
+                  </div>
+                  <div className="text-xs text-green-600 mt-1">
+                    {venue.distanceUser2 ? `${venue.distanceUser2} mi` : ''}
+                  </div>
+                </div>
+              </div>
 
               {/* Fairness Indicator */}
               <div className="mt-3 flex items-center justify-between text-xs">
@@ -196,7 +208,7 @@ export default function VenueList({ session, sessionId }) {
               )}
             </div>
           );
-        })}
+        });})()}
       </div>
 
       {/* Refresh Button */}
