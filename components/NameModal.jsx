@@ -15,10 +15,10 @@ export default function NameModal({ isOpen, onSubmit, onCancel }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h2 className="text-2xl font-bold mb-4">What's your name?</h2>
-        <p className="text-gray-600 mb-6">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-800 border border-slate-700 rounded-xl shadow-2xl max-w-md w-full p-6">
+        <h2 className="text-2xl font-bold text-white mb-4">What's your name?</h2>
+        <p className="text-slate-400 mb-6">
           Let your friend know who they're meeting!
         </p>
         
@@ -28,7 +28,7 @@ export default function NameModal({ isOpen, onSubmit, onCancel }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your name"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-slate-900/50 border border-slate-600 text-white rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-slate-500"
             autoFocus
             maxLength={30}
           />
@@ -37,14 +37,14 @@ export default function NameModal({ isOpen, onSubmit, onCancel }) {
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-lg transition-colors"
+              className="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-lg transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!name.trim()}
-              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white py-3 rounded-lg disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed transition-all shadow-lg shadow-cyan-500/30 font-medium"
             >
               Continue
             </button>

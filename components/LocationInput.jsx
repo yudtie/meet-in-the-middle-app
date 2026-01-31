@@ -5,7 +5,6 @@ export default function LocationInput({ onLocationSet }) {
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Method 1: Use browser geolocation
   const useCurrentLocation = () => {
     setLoading(true);
     
@@ -19,7 +18,6 @@ export default function LocationInput({ onLocationSet }) {
       async (position) => {
         const { latitude, longitude } = position.coords;
         
-        // Reverse geocode to get address (using Mapbox)
         try {
           const response = await fetch(
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`
@@ -51,7 +49,6 @@ export default function LocationInput({ onLocationSet }) {
     );
   };
 
-  // Method 2: Manual address entry
   const handleManualAddress = async (e) => {
     e.preventDefault();
     if (!address.trim()) return;
@@ -59,7 +56,6 @@ export default function LocationInput({ onLocationSet }) {
     setLoading(true);
     
     try {
-      // Geocode address using Mapbox
       const response = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`
       );
@@ -85,19 +81,23 @@ export default function LocationInput({ onLocationSet }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Set Your Location</h2>
+    <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 rounded-xl shadow-xl p-6 max-w-md mx-auto">
+      <h2 className="text-xl font-bold text-white mb-4">Set Your Location</h2>
       
       {/* Current Location Button */}
       <button
         onClick={useCurrentLocation}
         disabled={loading}
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg mb-4 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+        className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white py-3 rounded-lg mb-4 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed transition-all shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/40 inline-flex items-center justify-center gap-2 font-medium"
       >
-        {loading ? 'Getting location...' : '📍 Use My Current Location'}
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        {loading ? 'Getting location...' : 'Use My Current Location'}
       </button>
       
-      <div className="text-center text-gray-500 mb-4">OR</div>
+      <div className="text-center text-slate-500 mb-4 font-medium">OR</div>
       
       {/* Manual Address Input */}
       <form onSubmit={handleManualAddress}>
@@ -106,13 +106,13 @@ export default function LocationInput({ onLocationSet }) {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           placeholder="Enter your address"
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full bg-slate-900/50 border border-slate-600 text-white rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-slate-500"
           disabled={loading}
         />
         <button
           type="submit"
           disabled={loading || !address.trim()}
-          className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-lg disabled:bg-slate-800 disabled:cursor-not-allowed transition-colors font-medium"
         >
           {loading ? 'Finding address...' : 'Set Address'}
         </button>

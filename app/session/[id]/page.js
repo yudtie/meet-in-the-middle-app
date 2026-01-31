@@ -116,25 +116,39 @@ export default function SessionPage() {
   const canStart = userCount === 2;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 tracking-tight">Meet Me in the Middle</h1>
-              <p className="text-gray-600">
-                {userCount}/2 users connected
-              </p>
+        <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 rounded-xl shadow-xl p-4 sm:p-6 mb-6">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Meet Me in the Middle</h1>
+                <p className="text-base text-slate-400 mt-1">
+                  <span className="inline-flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${userCount === 2 ? 'bg-green-400' : 'bg-yellow-400'}`}></span>
+                    {userCount}/2 users connected
+                  </span>
+                </p>
+              </div>
             </div>
             
             {/* Share Link Button */}
             <button 
               onClick={copyShareLink}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+              className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white px-5 py-2.5 rounded-lg transition-all duration-200 font-medium text-sm shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/40 inline-flex items-center gap-2"
             >
-              📋 Copy Share Link
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              <span>Share Link</span>
             </button>
           </div>
         </div>
@@ -149,7 +163,7 @@ export default function SessionPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
             
             {/* Map */}
-            <div className="bg-white rounded-lg shadow p-2 sm:p-4 order-1">
+            <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 rounded-xl shadow-xl p-3 sm:p-6 order-1">
               <MapView 
                 session={session} 
                 currentUserId={userId}
@@ -158,7 +172,7 @@ export default function SessionPage() {
             </div>
 
             {/* Venues */}
-            <div className="bg-white rounded-lg shadow p-2 sm:p-4 order-2">
+            <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 rounded-xl shadow-xl p-3 sm:p-6 order-1">
               {canStart ? (
                 <VenueList session={session} sessionId={sessionId} />
               ) : (
