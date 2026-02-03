@@ -7,6 +7,7 @@ import LocationInput from '@/components/LocationInput';
 import MapView from '@/components/MapView';
 import VenueList from '@/components/VenueList';
 import NameModal from '@/components/NameModal';
+import ChatPanel from '@/components/ChatPanel';
 
 export default function SessionPage() {
   const params = useParams();
@@ -217,12 +218,20 @@ export default function SessionPage() {
         {hasJoined && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 max-w-7xl mx-auto">
             
-            {/* Map */}
-            <div className="bg-white border border-[#d0d0d0] rounded shadow-sm p-3 sm:p-6 order-1">
-              <MapView 
-                session={session} 
-                currentUserId={userId}
+            {/* Map + Chat (desktop) */}
+            <div className="order-1">
+              <div className="bg-white border border-[#d0d0d0] rounded shadow-sm p-3 sm:p-6">
+                <MapView
+                  session={session}
+                  currentUserId={userId}
+                  sessionId={sessionId}
+                />
+              </div>
+              {/* Desktop chat - below map */}
+              <ChatPanel
+                session={session}
                 sessionId={sessionId}
+                currentUserId={userId}
               />
             </div>
 
